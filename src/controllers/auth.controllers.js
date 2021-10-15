@@ -37,7 +37,7 @@ const registerUser = async (req, res, next) => {
 const loginUser = async (req, res, next) => {
   try {
     const candidate = req.body
-    const { error } = loginUserSchema.validate({ candidate })
+    const { error } = loginUserSchema.validate(candidate)
     if (error) {
       throw new CustomError(400, error.message)
     }

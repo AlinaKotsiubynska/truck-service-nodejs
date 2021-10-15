@@ -2,22 +2,26 @@ const { Schema, model, SchemaTypes } = require('mongoose')
 
 const truck = new Schema(
   {
-    userId: {
+    created_by: {
       type: SchemaTypes.String,
-      required: [true, 'userId is required']
+      required: [true, 'created_by is required']
     },
-    text: {
+    assigned_to: {
       type: SchemaTypes.String,
-      required: [true, 'Text is required']
+      default: null
     },
-    createdDate:
+    created_date:
     {
       type: SchemaTypes.String,
       required: [true, 'Creation date is required']
     },
-    completed: {
-      type: SchemaTypes.Boolean,
-      default: false
+    type: {
+      type: SchemaTypes.String,
+      required: [true, 'type date is required']
+    },
+    status: {
+      type: SchemaTypes.String,
+      default: 'IS'
     }
   }
 )

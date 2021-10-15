@@ -1,10 +1,10 @@
 const Joi = require('joi')
-const {USER_ROLES} = require('../constants')
+const {USER_ROLE} = require('../constants')
 
 const registerUserSchema = Joi.object({
   email: Joi.string().pattern(/^[a-zA-Z0-9.]{3,}@[a-zA-Z0-9]+[.]+[a-zA-Z0-9]+$/).required(),
   password: Joi.string().min(1).required(),
-  role: Joi.string().pattern(new RegExp(`${USER_ROLES.DRIVER}|${USER_ROLES.SHIPPER}`)).required()
+  role: Joi.string().pattern(new RegExp(`${USER_ROLE.DRIVER}|${USER_ROLE.SHIPPER}`)).required()
 })
 
 const loginUserSchema = Joi.object({
