@@ -1,6 +1,5 @@
-const jwt = require('jsonwebtoken')
 const User = require('../models/user.model')
-const SECRET_KEY = require('../configs/auth.config')
+const {jwtGenerator} = require('../helpers/jwtGenerator')
 const CustomError = require('../helpers/classCustomError')
 const getCreatedDate = require('../helpers/getCreatedDate')
 const { validateHashedPassword, hashPassword } = require('../helpers/bcryptPasswordService')
@@ -38,11 +37,7 @@ const loginUser = async (req, res, next) => {
       throw new CustomError(400, 'Invalid email')
     }
     await validateHashedPassword(user.password, candidate.password)
-    const payload = {
-      email: user.email,
-      _id: user['_id']
-    }
-    user.token = jwt.sign(payload, SECRET_KEY)
+    user.token = jwtGenerator(user)
     await user.save()
     res.status(200).json({ jwt_token: user.token })
   } catch (error) {
