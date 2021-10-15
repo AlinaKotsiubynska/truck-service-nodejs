@@ -1,0 +1,40 @@
+{
+  "name": "nodejs_hw3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "start:dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.10",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-google": "^0.14.0",
+    "nodemon": "^2.0.13"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/alinakotsiubynska/lab-fe-nodejs-hw-3.git"
+  },
+  "keywords": [
+    "jwt",
+    "mongoDB"
+  ],
+  "type": "commonjs",
+  "author": "Alina Kotsiubynska",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/alinakotsiubynska/lab-fe-nodejs-hw-3/issues"
+  },
+  "homepage": "https://gitlab.com/alinakotsiubynska/lab-fe-nodejs-hw-3#readme"
+}
