@@ -12,9 +12,9 @@ const registerUser = async (req, res, next) => {
     const createdDate = getCreatedDate()
     const user = {
       email,
-      username: email,
       role,
-      createdDate,
+      username: email,
+      created_date: createdDate,
       password: await hashPassword(password)
     }
     await User.create(user)
