@@ -1,4 +1,4 @@
-const Note = require('../models/note.model')
+const Note = require('../models/truck.model')
 const getCreatedDate = require('../helpers/getCreatedDate')
 const CustomError = require('../helpers/classCustomError')
 

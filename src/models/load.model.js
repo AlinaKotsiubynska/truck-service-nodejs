@@ -1,6 +1,6 @@
 const { Schema, model, SchemaTypes } = require('mongoose')
 
-const note = new Schema(
+const truck = new Schema(
   {
     userId: {
       type: SchemaTypes.String,
@@ -22,6 +22,6 @@ const note = new Schema(
   }
 )
 
-const Note = model('notes', note)
+const Truck = model('trucks', truck)
 
-module.exports = Note
+module.exports = Truck
