@@ -7,7 +7,7 @@ const router = Router()
 router.use('/me', jwtValidator)
 router.get('/me', getUserInfo)
 router.delete('/me', deleteUser)
-router.patch('/me', changeUserPassword)
+router.patch('/me/password', changeUserPassword)
 
 
 module.exports = router

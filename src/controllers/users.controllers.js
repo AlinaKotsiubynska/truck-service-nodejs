@@ -1,5 +1,5 @@
 const User = require('../models/user.model')
-const Note = require('../models/note.model')
+const Note = require('../models/truck.model')
 const { validateHashedPassword, hashPassword } = require('../helpers/bcryptPasswordService')
 
 const USER_REQUIRED_FIELDS = ['_id', 'created_date', 'email', 'role']

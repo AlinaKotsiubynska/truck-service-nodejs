@@ -16,7 +16,7 @@ const user = new Schema(
       required: [true, 'Name is required'],
       unique: true
     },
-    createdDate:
+    created_date:
     {
       type: SchemaTypes.String,
       required: [true, 'Creation date is required']
