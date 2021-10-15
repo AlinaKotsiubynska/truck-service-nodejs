@@ -8,19 +8,21 @@ const { validateHashedPassword, hashPassword } = require('../helpers/bcryptPassw
 
 const registerUser = async (req, res, next) => {
   try {
-    const { username, password } = req.body
+    const { email, password, role } = req.body
     const createdDate = getCreatedDate()
     const user = {
-      username,
+      email,
+      username: email,
+      role,
       createdDate,
       password: await hashPassword(password)
     }
     await User.create(user)
 
-    res.status(200).json({ message: 'Success' })
+    res.status(200).json({ message: 'Profile created successfully' })
   } catch (error) {
     if (!error.status) {
-      res.status(500).json({ message: 'Internal server error' })
+      res.status(500).json({ message: error.message })
     } else {
       res.status(400).json({ message: error.message })
     }
@@ -31,21 +33,21 @@ const registerUser = async (req, res, next) => {
 const loginUser = async (req, res, next) => {
   try {
     const candidate = req.body
-    const user = await User.findOne({ username: candidate.username })
+    const user = await User.findOne({ email: candidate.email })
     if (!user) {
-      throw new CustomError(400, 'Invalid username')
+      throw new CustomError(400, 'Invalid email')
     }
     await validateHashedPassword(user.password, candidate.password)
     const payload = {
-      username: user.username,
+      email: user.email,
       _id: user['_id']
     }
     user.token = jwt.sign(payload, SECRET_KEY)
     await user.save()
-    res.status(200).json({ message: 'Success', jwt_token: user.token })
+    res.status(200).json({ jwt_token: user.token })
   } catch (error) {
     if (!error.status) {
-      res.status(500).json({ message: 'Internal server error' })
+      res.status(500).json({ message: error.message })
     } else {
       res.status(400).json({ message: error.message })
     }

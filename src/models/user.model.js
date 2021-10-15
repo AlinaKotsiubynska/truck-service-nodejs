@@ -1,23 +1,33 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model, SchemaTypes } = require('mongoose')
 
 const user = new Schema(
   {
     password: {
-      type: String,
+      type: SchemaTypes.String,
       required: [true, 'Password is required']
     },
-    username: {
-      type: String,
+    email: {
+      type: SchemaTypes.String,
       required: [true, 'Email is required'],
+      unique: true
+    },
+    username: {
+      type: SchemaTypes.String,
+      required: [true, 'Name is required'],
       unique: true
     },
     createdDate:
     {
-      type: String,
+      type: SchemaTypes.String,
       required: [true, 'Creation date is required']
     },
+    role: {
+      type: SchemaTypes.String,
+      required: [true, 'Role is required']
+
+    },
     token: {
-      type: String,
+      type: SchemaTypes.String,
       default: null
     }
   }
