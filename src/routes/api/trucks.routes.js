@@ -1,22 +1,22 @@
 const { Router } = require('express')
 const {
-  getUserNotes,
-  deleteUserNote,
-  toggleUserNoteStatus,
-  createUserNote,
-  getUserNote,
-  editUserNote } = require('../../controllers/notes.controllers')
-const jwtValidator = require('../../middlewares/jwtValidator')
+  getUserTrucks,
+  deleteUserTruck,
+  assignUserTruck,
+  createUserTruck,
+  getUserTruck,
+  updateUserTruck } = require('../../controllers/trucks.controllers')
+const {jwtValidator, driverRoleValidator} = require('../../middlewares')
 
 const router = Router()
 
 router.use('/', jwtValidator)
-router.get('/', getUserNotes)
-router.post('/', createUserNote)
-router.get('/:id', getUserNote)
-router.put('/:id', editUserNote)
-router.patch('/:id', toggleUserNoteStatus)
-router.delete('/:id', deleteUserNote)
-
+router.use('/', driverRoleValidator)
+router.get('/', getUserTrucks)
+router.post('/', createUserTruck)
+// router.get('/:id', getUserTruck)
+// router.put('/:id', updateUserTruck)
+// router.delete('/:id', deleteUserTruck)
+// router.post('/:id/assign', assignUserTruck)
 
 module.exports = router
