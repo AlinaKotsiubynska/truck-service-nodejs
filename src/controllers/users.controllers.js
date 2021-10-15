@@ -1,6 +1,9 @@
 const User = require('../models/user.model')
 const Note = require('../models/truck.model')
 const { validateHashedPassword, hashPassword } = require('../helpers/bcryptPasswordService')
+const {changeUserPasswordSchema} = require('../helpers/validationSchemas/userSchemas')
+const CustomError = require('../helpers/classCustomError')
+
 
 const USER_REQUIRED_FIELDS = ['_id', 'created_date', 'email', 'role']
 
@@ -39,6 +42,10 @@ const changeUserPassword = async (req, res, next) => {
   try {
     const { _id } = req.verifiedUser
     const { oldPassword, newPassword } = req.body
+    const { error } = changeUserPasswordSchema.validate({ oldPassword, newPassword })
+    if (error) {
+      throw new CustomError(400, error.message)
+    }
     const user = await User.findById(_id)
     await validateHashedPassword(user.password, oldPassword)
     user.password = await hashPassword(newPassword)

@@ -1,5 +1,6 @@
 const User = require('../models/user.model')
-const {jwtGenerator} = require('../helpers/jwtGenerator')
+const { jwtGenerator } = require('../helpers/jwtGenerator')
+const {loginUserSchema, registerUserSchema} = require('../helpers/validationSchemas/userSchemas')
 const CustomError = require('../helpers/classCustomError')
 const getCreatedDate = require('../helpers/getCreatedDate')
 const { validateHashedPassword, hashPassword } = require('../helpers/bcryptPasswordService')
@@ -8,6 +9,10 @@ const { validateHashedPassword, hashPassword } = require('../helpers/bcryptPassw
 const registerUser = async (req, res, next) => {
   try {
     const { email, password, role } = req.body
+    const { error } = registerUserSchema.validate({ email, password, role })
+    if (error) {
+      throw new CustomError(400, error.message)
+    }
     const createdDate = getCreatedDate()
     const user = {
       email,
@@ -32,6 +37,10 @@ const registerUser = async (req, res, next) => {
 const loginUser = async (req, res, next) => {
   try {
     const candidate = req.body
+    const { error } = loginUserSchema.validate({ candidate })
+    if (error) {
+      throw new CustomError(400, error.message)
+    }
     const user = await User.findOne({ email: candidate.email })
     if (!user) {
       throw new CustomError(400, 'Invalid email')

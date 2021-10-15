@@ -17,13 +17,6 @@ const changeUserPasswordSchema = Joi.object({
   newPassword: Joi.string().min(1).invalid(Joi.ref('oldPassword')).required()
 })
 
-// const { error } = changeUserPasswordSchema.validate({
-//   'oldPassword': 've518dl3',
-//   'newPassword': 've518dl3'
-// })
-
-// console.log(error.message)
-
 module.exports = {
   registerUserSchema,
   loginUserSchema,
