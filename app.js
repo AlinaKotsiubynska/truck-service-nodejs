@@ -9,7 +9,7 @@ const PORT = process.env.PORT || DEFAULT_PORT;
 
 const authRouter = require('./src/routes/api/auth.routes')
 const usersRouter = require('./src/routes/api/users.routes')
-const notesRouter = require('./src/routes/api/notes.routes')
+const trucksRouter = require('./src/routes/api/trucks.routes')
 
 const app = express()
 
@@ -19,7 +19,7 @@ app.use(express.json())
 
 app.use('/api/auth', authRouter)
 app.use('/api/users', usersRouter)
-app.use('/api/notes', notesRouter)
+app.use('/api/trucks', trucksRouter)
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found' })
