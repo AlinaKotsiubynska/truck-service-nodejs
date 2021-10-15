@@ -16,7 +16,7 @@ const getUserTrucks = async (req, res, next) => {
     
   } catch (error) {
         if(!error.status) {
-      res.status(500).json({message: 'Internal server error'})
+      res.status(500).json({message: error.message})
     } else {
     res.status(400).json({message: error.message})
     }
@@ -29,7 +29,7 @@ const createUserTruck = async (req, res, next) => {
     const {_id} = req.verifiedUser
     const { type } = req.body
     if (!type) {
-      throw new CustomError(400, 'Please specify "text" parameter in request body')
+      throw new CustomError(400, 'Please specify "type" parameter in request body')
     }
     const { error } = truckTypeSchema.validate({ type })
     if (error) {
@@ -45,7 +45,7 @@ const createUserTruck = async (req, res, next) => {
     
   } catch (error) {
         if(!error.status) {
-      res.status(500).json({message: 'Internal server error'})
+      res.status(500).json({message: error.message})
     } else {
     res.status(400).json({message: error.message})
     }
@@ -55,15 +55,15 @@ const createUserTruck = async (req, res, next) => {
 
 const getUserTruck = async (req, res, next) => {
   try {
-    const { id: noteId } = req.params
-    const note = await Truck.findById(noteId, NOTE_REQUIRED_FIELDS)
-    if(!note) {
-      throw new CustomError(400, `Truck with id ${noteId} not found`)
+    const { id } = req.params
+    const truck = await Truck.findById( id ,TRUCK_REQUIRED_FIELDS)
+    if(!truck) {
+      throw new CustomError(400, `Truck with id ${id} not found`)
     }
-    res.status(200).json({note})
+    res.status(200).json({truck})
   } catch (error) {
         if(!error.status) {
-      res.status(500).json({message: 'Internal server error'})
+      res.status(500).json({message: error.message})
     } else {
     res.status(400).json({message: error.message})
     }
@@ -73,19 +73,23 @@ const getUserTruck = async (req, res, next) => {
 
 const updateUserTruck = async (req, res, next) => {
   try {
-    const { id: noteId } = req.params
-    const { text } = req.body
-    if (!text) {
-      throw new CustomError(400, 'Please specify "text" parameter in request body')
+    const { id } = req.params
+    const { type } = req.body
+    if (!type) {
+      throw new CustomError(400, 'Please specify "type" parameter in request body')
     }
-    const note = await Truck.findByIdAndUpdate(noteId, { text: text })
-    if(!note) {
-      throw new CustomError(400, `Truck with id ${noteId} not found`)
+    const { error } = truckTypeSchema.validate({ type })
+    if (error) {
+      throw new CustomError(400, error.message)
     }
-    res.status(200).json({message: 'Success'})
+    const truck = await Truck.findByIdAndUpdate(id, { type: type })
+    if(!truck) {
+      throw new CustomError(400, `Truck with id ${id} not found`)
+    }
+    res.status(200).json({message: 'Truck details changed successfully'})
   } catch (error) {
         if(!error.status) {
-      res.status(500).json({message: 'Internal server error'})
+      res.status(500).json({message: error.message})
     } else {
     res.status(400).json({message: error.message})
     }
@@ -95,17 +99,18 @@ const updateUserTruck = async (req, res, next) => {
 
 const assignUserTruck = async (req, res, next) => {
   try {
-    const { id: noteId } = req.params
-    const note = await Truck.findOne({_id: noteId})
-    if(!note) {
-      throw new CustomError(400, `Truck with id ${noteId} not found`)
+    const { _id: userId } = req.verifiedUser
+    const { id: truckId } = req.params
+    const truck = await Truck.findByIdAndUpdate(truckId, {assigned_to: userId})
+    if(!truck) {
+      throw new CustomError(400, `Truck with id ${truckId} not found`)
     }
-    note.completed = !note.completed
-    await note.save()
-    res.status(200).json({message: 'Success'})
+    truck.completed = !truck.completed
+    await truck.save()
+    res.status(200).json({message: 'Truck assigned successfully'})
   } catch (error) {
         if(!error.status) {
-      res.status(500).json({message: 'Internal server error'})
+      res.status(500).json({message: error.message})
     } else {
     res.status(400).json({message: error.message})
     }
@@ -114,15 +119,16 @@ const assignUserTruck = async (req, res, next) => {
 }
 const deleteUserTruck = async (req, res, next) => {
   try {
-    const { id: noteId } = req.params
-    const note = await Truck.findByIdAndRemove(noteId)
-    if(!note) {
-      throw new CustomError(400, `Truck with id ${noteId} not found`)
+    const { _id: userId } = req.verifiedUser
+    const { id } = req.params
+    const truck = await Truck.findByIdAndRemove(id, {created_by: userId})
+    if(!truck) {
+      throw new CustomError(400, `Truck with id ${id} not found`)
     }
-    res.status(200).json({message: 'Success'})
+    res.status(200).json({message: 'Truck deleted successfully'})
   } catch (error) {
         if(!error.status) {
-      res.status(500).json({message: 'Internal server error'})
+      res.status(500).json({message: error.message})
     } else {
     res.status(400).json({message: error.message})
     }

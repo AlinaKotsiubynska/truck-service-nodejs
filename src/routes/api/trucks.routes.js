@@ -14,9 +14,9 @@ router.use('/', jwtValidator)
 router.use('/', driverRoleValidator)
 router.get('/', getUserTrucks)
 router.post('/', createUserTruck)
-// router.get('/:id', getUserTruck)
-// router.put('/:id', updateUserTruck)
-// router.delete('/:id', deleteUserTruck)
-// router.post('/:id/assign', assignUserTruck)
+router.get('/:id', getUserTruck)
+router.put('/:id', updateUserTruck)
+router.delete('/:id', deleteUserTruck)
+router.post('/:id/assign', assignUserTruck)
 
 module.exports = router
