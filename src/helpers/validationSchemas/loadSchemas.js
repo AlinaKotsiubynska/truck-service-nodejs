@@ -13,6 +13,18 @@ const newLoadSchema = Joi.object({
   })
 })
 
+const updateLoadSchema = Joi.object({
+  name: Joi.string().min(1),
+  payload: Joi.number().positive(),
+  pickup_address: Joi.string().min(1),
+  delivery_address: Joi.string().min(1),
+  dimensions: Joi.object({
+    width: Joi.number().positive(),
+    length: Joi.number().positive(),
+    height: Joi.number().positive()
+  }).min(1)
+})
+
 const getLoadsSchema = Joi.object({
   status: Joi.string().pattern(new RegExp(`${Object.values(LOAD_STATUS).join('|')}`)).optional(),
   limit: Joi.number().positive().max(LOADS_PAGINATION_OPTS.LIMIT.max).optional(),
@@ -22,5 +34,6 @@ const getLoadsSchema = Joi.object({
 
 module.exports = {
   newLoadSchema,
-  getLoadsSchema
+  getLoadsSchema,
+  updateLoadSchema
 }
