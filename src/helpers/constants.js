@@ -21,10 +21,21 @@ const LOAD_STATUS = {
   SHIPPED: 'SHIPPED' // finished shipment, history
 }
 
+const LOADS_PAGINATION_OPTS = {
+  LIMIT: {
+    default: 0,
+    max: 50
+  },
+  OFFSET: {
+    default: 0
+  }
+}
+
 
 module.exports = {
   USER_ROLE,
   TRUCK_TYPE,
   TRUCK_STATUS,
-  LOAD_STATUS
+  LOAD_STATUS,
+  LOADS_PAGINATION_OPTS
 }
