@@ -8,12 +8,13 @@ const {
   getUserActiveLoads,
   triggerNextUserLoadState,
   postUserLoad,
-  getLoadShippingInfo} = require('../../controllers/loads.controllers')
+  getLoadShippingInfo } = require('../../controllers/loads.controllers')
+const {driverRoleValidator, shipperRoleValidator} =require('../../middlewares')
 
 const router = Router()
 
 router.get('/', getUserLoads) 
-router.post('/', createUserLoad) //shipper
+router.post('/', shipperRoleValidator, createUserLoad) //shipper
 router.get('/active', getUserActiveLoads) //driver
 router.patch('/active/state', triggerNextUserLoadState) //driver
 router.get('/:id', getUserLoad)

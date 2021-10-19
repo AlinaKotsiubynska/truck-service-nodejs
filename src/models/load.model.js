@@ -30,26 +30,24 @@ const load = new Schema(
       type: SchemaTypes.String,
       required: [true, 'Pickup address is required']
     },
-      delivery_address: {
+    delivery_address: {
       type: SchemaTypes.String,
       required: [true, 'Delivery address is required']
     },
     dimensions: {
-        type: SchemaTypes.Map,
-        of: new Schema({
-          width: {
-            type: SchemaTypes.Number,
-            required: [true, 'Width is required']
-          },
-          length: {
-            type: SchemaTypes.Number,
-            required: [true, 'Length is required']
-          },
-          height: {
-            type: SchemaTypes.Number,
-            required: [true, 'Height is required']
-          }
-        })
+      width: {
+        type: SchemaTypes.Number,
+        required: [true, 'Width is required']
+      },
+      length: {
+        type: SchemaTypes.Number,
+        required: [true, 'Length is required']
+      },
+      height: {
+        type: SchemaTypes.Number,
+        required: [true, 'Height is required']
+      }
+
     },
     logs: {
       type: SchemaTypes.Array,

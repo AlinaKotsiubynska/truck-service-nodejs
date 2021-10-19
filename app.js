@@ -7,9 +7,11 @@ require('./src/configs/db.config')
 const DEFAULT_PORT = 8080;
 const PORT = process.env.PORT || DEFAULT_PORT;
 
+const {jwtValidator, driverRoleValidator} = require('./src/middlewares')
 const authRouter = require('./src/routes/api/auth.routes')
 const usersRouter = require('./src/routes/api/users.routes')
 const trucksRouter = require('./src/routes/api/trucks.routes')
+const loadsRouter = require('./src/routes/api/loads.routes')
 
 const app = express()
 
@@ -18,8 +20,10 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/api/auth', authRouter)
+app.use(jwtValidator)
 app.use('/api/users', usersRouter)
-app.use('/api/trucks', trucksRouter)
+app.use('/api/loads', loadsRouter)
+app.use('/api/trucks', driverRoleValidator, trucksRouter)
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found' })
