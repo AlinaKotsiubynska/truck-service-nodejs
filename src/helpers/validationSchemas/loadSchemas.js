@@ -1,4 +1,5 @@
 const Joi = require('joi')
+const { LOAD_STATUS, LOADS_PAGINATION_OPTS } = require('../constants')
 
 const newLoadSchema = Joi.object({
   name: Joi.string().min(1).required(),
@@ -12,6 +13,14 @@ const newLoadSchema = Joi.object({
   })
 })
 
+const getLoadsSchema = Joi.object({
+  status: Joi.string().pattern(new RegExp(`${Object.values(LOAD_STATUS).join('|')}`)).optional(),
+  limit: Joi.number().positive().max(LOADS_PAGINATION_OPTS.LIMIT.max).optional(),
+  offset: Joi.number().positive().optional()
+
+})
+
 module.exports = {
-  newLoadSchema
+  newLoadSchema,
+  getLoadsSchema
 }
