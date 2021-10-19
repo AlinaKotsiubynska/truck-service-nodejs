@@ -15,7 +15,7 @@ const router = Router()
 
 router.get('/', getUserLoads) //+
 router.get('/:id', getUserLoad) //+
-router.put('/:id', shipperRoleValidator, updateUserLoad) //shipper 
+router.put('/:id', shipperRoleValidator, updateUserLoad) //shipper +
 router.delete('/:id', shipperRoleValidator, deleteUserLoad) //shipper
 router.post('/:id/post', shipperRoleValidator, postUserLoad) //shipper
 router.get('/:id/shipping_info', shipperRoleValidator, getLoadShippingInfo) //shipper

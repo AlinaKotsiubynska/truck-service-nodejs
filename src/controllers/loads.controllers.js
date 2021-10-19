@@ -4,7 +4,7 @@ const { joiValidationService } = require('../helpers/joiValidationService')
 const {defineFilterByRole} = require('../helpers/defineFilterByRole')
 const { newLoadSchema, getLoadsSchema, updateLoadSchema } = require('../helpers/validationSchemas/loadSchemas')
 const CustomError = require('../helpers/classCustomError')
-const { LOADS_PAGINATION_OPTS: {LIMIT, OFFSET} } = require('../helpers/constants')
+const { LOADS_PAGINATION_OPTS: {LIMIT, OFFSET}, LOAD_STATUS } = require('../helpers/constants')
 
 const LOAD_REQUIRED_FIELDS = ['_id', 'created_by', 'assigned_to', 'status', 'state', 'name',
   'payload', 'pickup_address', 'delivery_address', 'dimensions', 'logs', 'created_date']
@@ -88,22 +88,34 @@ const getUserLoad = async (req, res, next) => {
 const updateUserLoad = async (req, res, next) => {
   try {
     const { id: loadId } = req.params
-    const load = req.body
-    if (!load) {
+    const newLoadInfo = req.body
+
+    if (!newLoadInfo) {
       throw new CustomError(400, 'Please specify load parameters in request body')
     }
-    console.log(load)
-    joiValidationService(updateLoadSchema, load)
-    const updatedLoad = await Load.findByIdAndUpdate(loadId, { ...load })
-    if(!updatedLoad) {
+
+    joiValidationService(updateLoadSchema, newLoadInfo)
+
+    let load = await Load.findById(loadId)
+    if(!load) {
       throw new CustomError(400, `Load with id ${loadId} not found`)
     }
-    res.status(200).json({message: 'Success'})
+
+    if (load.status !== LOAD_STATUS.NEW) {
+      throw new CustomError(400, `Updating is not allowed for status ${load.status}`)
+    }
+
+    for (let key in newLoadInfo) {
+      load[key] = newLoadInfo[key]
+    }
+
+    load.save()
+    res.status(200).json({message: 'Load details changed successfully'})
   } catch (error) {
         if(!error.status) {
-      res.status(500).json({message: 'Internal server error'})
+      res.status(500).json({message: error.message})
     } else {
-    res.status(400).json({message: error.message})
+    res.status(error.status || 400).json({message: error.message})
     }
 
   }
@@ -129,21 +141,26 @@ const getUserActiveLoads = async (req, res, next) => {
   // }
 }
 const deleteUserLoad = async (req, res, next) => {
-  // try {
-  //   const { id: noteId } = req.params
-  //   const note = await Load.findByIdAndRemove(noteId)
-  //   if(!note) {
-  //     throw new CustomError(400, `Load with id ${noteId} not found`)
-  //   }
-  //   res.status(200).json({message: 'Success'})
-  // } catch (error) {
-  //       if(!error.status) {
-  //     res.status(500).json({message: 'Internal server error'})
-  //   } else {
-  //   res.status(400).json({message: error.message})
-  //   }
+  try {
+    const { id: loadId } = req.params
+    const load = await Load.findById(loadId)
+    if(!load) {
+      throw new CustomError(400, `Load with id ${loadId} not found`)
+    }
+    if (load.status !== LOAD_STATUS.NEW) {
+      throw new CustomError(400, `Deleting is not allowed for status ${load.status}`)
+    }
 
-  // }
+    load.remove()
+    res.status(200).json({message: 'Success'})
+  } catch (error) {
+        if(!error.status) {
+      res.status(500).json({message: error.message})
+    } else {
+    res.status(400).json({message: error.message})
+    }
+
+  }
 }
 const triggerNextUserLoadState = async (req, res, next) => {
   // try {
