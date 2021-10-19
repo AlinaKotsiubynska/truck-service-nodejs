@@ -1,4 +1,5 @@
 const { Schema, model, SchemaTypes } = require('mongoose')
+const {LOAD_STATUS} = require('../helpers/constants')
 
 const load = new Schema(
   {
@@ -12,7 +13,8 @@ const load = new Schema(
     },
     status: {
       type: SchemaTypes.String,
-      derequired: [true, 'Status is required']
+      default: LOAD_STATUS.NEW
+
     },
     state: {
       type: SchemaTypes.String,
