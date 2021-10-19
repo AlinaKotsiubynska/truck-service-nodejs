@@ -1,39 +1,44 @@
 const Load = require('../models/load.model')
 const getCreatedDate = require('../helpers/getCreatedDate')
-const {joiValidationService} = require('../helpers/joiValidationService')
-const { newLoadSchema } = require('../helpers/validationSchemas/loadSchemas')
+const { joiValidationService } = require('../helpers/joiValidationService')
+const {defineFilterByRole} = require('../helpers/defineFilterByRole')
+const { newLoadSchema, getLoadsSchema } = require('../helpers/validationSchemas/loadSchemas')
 const CustomError = require('../helpers/classCustomError')
+const { LOADS_PAGINATION_OPTS: {LIMIT, OFFSET} } = require('../helpers/constants')
 
-// const NOTE_REQUIRED_FIELDS = ['_id', 'userId', 'completed', 'text', 'createdDate']
+const LOAD_REQUIRED_FIELDS = ['_id', 'created_by', 'assigned_to', 'status', 'state', 'name',
+  'payload', 'pickup_address', 'delivery_address', 'dimensions', 'logs', 'created_date']
 
 const getUserLoads = async (req, res, next) => {
-  // try {
-  //   const { _id } = req.verifiedUser
-  //   const { offset, limit } = req.query
-  //   const paginationOps = {
-  //     skip: offset ? parseInt(offset) : 0,
-  //     limit: limit ? parseInt(limit) : 0
-  //   }
-  //   const notes = await Load.find({ userId: _id }, NOTE_REQUIRED_FIELDS)
-  //     .skip(paginationOps.skip)
-  //     .limit(paginationOps.limit)
-    
-  //   const resultObj = {
-  //     offset: paginationOps.skip,
-  //     limit: paginationOps.limit,
-  //     count: notes.length,
-  //     notes
-  //   }
-  //   res.status(200).json({ ...resultObj })
-    
-  // } catch (error) {
-  //       if(!error.status) {
-  //     res.status(500).json({message: 'Internal server error'})
-  //   } else {
-  //   res.status(400).json({message: error.message})
-  //   }
+  try {
+    const { _id } = req.verifiedUser
+    const { offset, limit, status } = req.query
+    const role = req.userRole
 
-  // }
+    joiValidationService(getLoadsSchema, { offset, limit, status })
+
+    const paginationOps = {
+      skip: offset ? parseInt(offset) : OFFSET.default,
+      limit: limit ? parseInt(limit) : LIMIT.default
+    }
+
+    const filter = defineFilterByRole(role, _id, status)
+
+    const loads = await Load.find(filter, LOAD_REQUIRED_FIELDS)
+      .skip(paginationOps.skip)
+      .limit(paginationOps.limit)
+      
+    
+    res.status(200).json({ loads: loads })
+    
+  } catch (error) {
+        if(!error.status) {
+      res.status(500).json({message: error.message})
+    } else {
+    res.status(400).json({message: error.message})
+    }
+
+  }
 }
 
 const createUserLoad = async (req, res, next) => {
@@ -48,7 +53,6 @@ const createUserLoad = async (req, res, next) => {
       ...load,
       created_by: _id,
       created_date: getCreatedDate()
-      
     }
     Load.create(newLoad)
     res.status(200).json({message: 'Load created successfully'})
@@ -64,21 +68,21 @@ const createUserLoad = async (req, res, next) => {
 }
 
 const getUserLoad = async (req, res, next) => {
-  // try {
-  //   const { id: noteId } = req.params
-  //   const note = await Load.findById(noteId, NOTE_REQUIRED_FIELDS)
-  //   if(!note) {
-  //     throw new CustomError(400, `Load with id ${noteId} not found`)
-  //   }
-  //   res.status(200).json({note})
-  // } catch (error) {
-  //       if(!error.status) {
-  //     res.status(500).json({message: 'Internal server error'})
-  //   } else {
-  //   res.status(400).json({message: error.message})
-  //   }
+  try {
+    const { id: loadId } = req.params
+    const load = await Load.findById(loadId, LOAD_REQUIRED_FIELDS)
+    if(!load) {
+      throw new CustomError(400, `Load with id ${loadId} not found`)
+    }
+    res.status(200).json({load})
+  } catch (error) {
+        if(!error.status) {
+      res.status(500).json({message: 'Internal server error'})
+    } else {
+    res.status(400).json({message: error.message})
+    }
 
-  // }
+  }
 }
 
 const updateUserLoad = async (req, res, next) => {
@@ -198,7 +202,7 @@ module.exports = {
   getUserLoad,
   getUserActiveLoads, //driver
   triggerNextUserLoadState, //driver
-  createUserLoad, //shipper
+  createUserLoad, //shipper +
   updateUserLoad, //shipper
   deleteUserLoad, //shipper
   postUserLoad, //shipper
