@@ -1,5 +1,6 @@
+require('module-alias/register')
 const Joi = require('joi')
-const {USER_ROLE} = require('../constants')
+const {USER_ROLE} = require('helpers/constants')
 
 const registerUserSchema = Joi.object({
   email: Joi.string().pattern(/^[a-zA-Z0-9.]{3,}@[a-zA-Z0-9]+[.]+[a-zA-Z0-9]+$/).required(),

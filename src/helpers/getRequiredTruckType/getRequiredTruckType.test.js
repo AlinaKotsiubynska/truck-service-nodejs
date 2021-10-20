@@ -1,5 +1,6 @@
+require('module-alias/register')
 const { getRequiredTruckType } = require('./getRequiredTruckType')
-const {TRUCK_TYPE} = require('./constants')
+const {TRUCK_TYPE} = require('helpers/constants')
 
 
 describe('get truck size for the load', () => {

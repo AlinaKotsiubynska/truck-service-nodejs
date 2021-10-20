@@ -1,4 +1,5 @@
-const CustomError = require('../helpers/classCustomError')
+require('module-alias/register')
+const CustomError = require('helpers/classCustomError')
 
 const joiValidationService = (schema, obj) => {
   const { error } = schema.validate(obj)

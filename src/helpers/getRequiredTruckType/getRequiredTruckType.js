@@ -1,4 +1,5 @@
-const {TRUCK_SIZES} = require('../../constants')
+require('module-alias/register')
+const { TRUCK_SIZES } = require('helpers/constants')
 
 const getRequiredTruckType = (load) => {
   const sizes = []

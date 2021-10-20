@@ -1,3 +1,4 @@
+require('module-alias/register')
 const { Router } = require('express')
 const {
   getUserTrucks,
@@ -5,7 +6,7 @@ const {
   assignUserTruck,
   createUserTruck,
   getUserTruck,
-  updateUserTruck } = require('../../controllers/trucks.controllers')
+  updateUserTruck } = require('controllers/trucks.controllers')
 
 const router = Router()
 

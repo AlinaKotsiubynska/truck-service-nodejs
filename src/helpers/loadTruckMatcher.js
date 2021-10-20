@@ -1,7 +1,8 @@
-const Truck = require('../models/truck.model')
-const CustomError = require('./classCustomError')
-const { getRequiredTruckType } = require('./utils/getRequiredTruckType')
-const {TRUCK_STATUS} = require('./constants')
+require('module-alias/register')
+const Truck = require('models/truck.model')
+const CustomError = require('helpers/classCustomError')
+const { getRequiredTruckType } = require('helpers/getRequiredTruckType')
+const {TRUCK_STATUS} = require('helpers/constants')
 
 const loadTruckMatcher = async (load) => {
   const truckTypes = getRequiredTruckType(load)

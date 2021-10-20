@@ -16,6 +16,7 @@
     "express": "^4.17.1",
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
+    "module-alias": "^2.2.2",
     "mongoose": "^6.0.10",
     "morgan": "^1.10.0",
     "nodemailer": "^6.7.0"
@@ -40,5 +41,14 @@
   "bugs": {
     "url": "https://gitlab.com/alinakotsiubynska/lab-fe-nodejs-hw-3/issues"
   },
-  "homepage": "https://gitlab.com/alinakotsiubynska/lab-fe-nodejs-hw-3#readme"
+  "homepage": "https://gitlab.com/alinakotsiubynska/lab-fe-nodejs-hw-3#readme",
+  "_moduleAliases": {
+    "root": ".",
+    "configs": "src/configs",
+    "helpers": "src/helpers",
+    "controllers": "src/controllers",
+    "middlewares": "src/middlewares",
+    "models": "src/models",
+    "routes": "src/routes"
+  }
 }

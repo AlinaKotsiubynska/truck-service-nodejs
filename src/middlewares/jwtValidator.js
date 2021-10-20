@@ -1,7 +1,8 @@
+require('module-alias/register')
 const jwt = require('jsonwebtoken')
-const User = require('../models/user.model')
-const SECRET_KEY = require('../configs/auth.config')
-const CustomError = require('../helpers/classCustomError')
+const User = require('models/user.model')
+const SECRET_KEY = require('configs/auth.config')
+const CustomError = require('helpers/classCustomError')
 
 const jwtValidator = async (req, res, next) => {
   try {
