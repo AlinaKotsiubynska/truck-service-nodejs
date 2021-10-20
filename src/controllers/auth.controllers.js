@@ -78,14 +78,13 @@ const forgetUserPassword = async (req, res, next) => {
     user.password = hashedPass
     await user.save()
     const mailOptions = {
-      from: 'alinakotsiubynska@meta.ua',
+      from: 'alinakotsiubynska@gmail.com',
       to: email,
       subject: 'Password reset',
       text: `Your new email is ${newPass}. Please, change it after next login`
     };
-    const result = await mailServise.sendMail(mailOptions)
-    console.log(result)
-
+    await mailServise.send(mailOptions)
+    
     res.status(200).json({ message: 'New password sent to your email address' })
   } catch (error) {
     if (!error.status) {
