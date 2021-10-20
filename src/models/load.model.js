@@ -9,7 +9,7 @@ const load = new Schema(
     },
     assigned_to: {
       type: SchemaTypes.String,
-      default: null
+      default: ''
     },
     status: {
       type: SchemaTypes.String,
