@@ -1,9 +1,11 @@
 const User = require('../models/user.model')
 const { jwtGenerator } = require('../helpers/jwtGenerator')
-const { loginUserSchema, registerUserSchema } = require('../helpers/validationSchemas/userSchemas')
+const { loginUserSchema, registerUserSchema, forgetPasswordSchema } = require('../helpers/validationSchemas/userSchemas')
 const CustomError = require('../helpers/classCustomError')
 const getCreatedDate = require('../helpers/getCreatedDate')
 const { validateHashedPassword, hashPassword } = require('../helpers/bcryptPasswordService')
+const { mailServise } = require('../helpers/mailServise')
+const { getRandomPass } = require('../helpers/getRandomPass')
 
 
 const registerUser = async (req, res, next) => {
@@ -59,19 +61,30 @@ const loginUser = async (req, res, next) => {
   }
 }
 
-const forgetUserPassword = (req, res, next) => {
+const forgetUserPassword = async (req, res, next) => {
   try {
     const { email } = req.body
-    const { error } = registerUserSchema.validate({ email })
+    const { error } = forgetPasswordSchema.validate({ email })
     if (error) {
       throw new CustomError(400, error.message)
     }
-    const user = await User.findOne({ email: candidate.email })
+    const user = await User.findOne({ email: email })
     if (!user) {
       throw new CustomError(400, 'Invalid email')
     }
-    user.password = ''
+
+    const newPass = getRandomPass()
+    const hashedPass = await hashPassword(newPass)
+    user.password = hashedPass
     await user.save()
+    const mailOptions = {
+      from: 'alinakotsiubynska@gmail.com',
+      to: email,
+      subject: 'Password reset',
+      text: `Your new email is ${newPass}. Please, change it after next login`
+    };
+    await mailServise.send(mailOptions)
+    
     res.status(200).json({ message: 'New password sent to your email address' })
   } catch (error) {
     if (!error.status) {
