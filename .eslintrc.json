@@ -16,7 +16,7 @@
 		"curly": "error",
 		"default-case": "warn",
 		"eqeqeq": ["error", "always"],
-		"guard-for-in": "warn",
+		"guard-for-in": "off",
 		"no-caller": "error",
 		"no-empty-function": "error",
 		"no-eval": "error",
