@@ -61,7 +61,7 @@ const createUserLoad = async (req, res, next) => {
     
   } catch (error) {
         if(!error.status) {
-      res.status(500).json({message: 'Internal server error'})
+      res.status(500).json({message: error.message})
     } else {
     res.status(400).json({message: error.message})
     }
@@ -79,7 +79,7 @@ const getUserLoad = async (req, res, next) => {
     res.status(200).json({load})
   } catch (error) {
         if(!error.status) {
-      res.status(500).json({message: 'Internal server error'})
+      res.status(500).json({message: error.message})
     } else {
     res.status(400).json({message: error.message})
     }
@@ -124,23 +124,21 @@ const updateUserLoad = async (req, res, next) => {
 }
 
 const getUserActiveLoads = async (req, res, next) => {
-  // try {
-  //   const { id: loadId } = req.params
-  //   const note = await Load.findOne({_id: noteId})
-  //   if(!note) {
-  //     throw new CustomError(400, `Load with id ${noteId} not found`)
-  //   }
-  //   note.completed = !note.completed
-  //   await note.save()
-  //   res.status(200).json({message: 'Success'})
-  // } catch (error) {
-  //       if(!error.status) {
-  //     res.status(500).json({message: 'Internal server error'})
-  //   } else {
-  //   res.status(400).json({message: error.message})
-  //   }
+  try {
+    const {_id} = req.verifiedUser
+    const load = await Load.findOne({ assigned_to: _id })
+    if (!load) {
+      throw new CustomError(400, `User has no active loads`)
+    }
+    res.status(200).json({load})
+  } catch (error) {
+        if(!error.status) {
+      res.status(500).json({message: error.message})
+    } else {
+    res.status(400).json({message: error.message})
+    }
 
-  // }
+  }
 }
 const deleteUserLoad = async (req, res, next) => {
   try {
@@ -174,7 +172,7 @@ const triggerNextUserLoadState = async (req, res, next) => {
   //   res.status(200).json({message: 'Success'})
   // } catch (error) {
   //       if(!error.status) {
-  //     res.status(500).json({message: 'Internal server error'})
+  //     res.status(500).json({message: error.message})
   //   } else {
   //   res.status(400).json({message: error.message})
   //   }
@@ -234,7 +232,7 @@ const getLoadShippingInfo = async (req, res, next) => {
     res.status(200).json({load: load, truck: truck})
   } catch (error) {
         if(!error.status) {
-      res.status(500).json({message: 'Internal server error'})
+      res.status(500).json({message: error.message})
     } else {
     res.status(400).json({message: error.message})
     }
