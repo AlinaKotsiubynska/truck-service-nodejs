@@ -65,6 +65,10 @@ const LOAD_STATE_TRANSITIONS = [
   'Arrived to delivery'
 ]
 
+const LOAD_REQUIRED_FIELDS = ['_id', 'created_by', 'assigned_to', 'status', 'state', 'name',
+  'payload', 'pickup_address', 'delivery_address', 'dimensions', 'logs', 'created_date']
+
+const TRUCK_REQUIRED_FIELDS = ['_id', 'created_by', 'assigned_to', 'type', 'status', 'created_date']
 
 module.exports = {
   USER_ROLE,
@@ -73,5 +77,7 @@ module.exports = {
   LOAD_STATUS,
   LOADS_PAGINATION_OPTS,
   TRUCK_SIZES,
-  LOAD_STATE_TRANSITIONS
+  LOAD_STATE_TRANSITIONS,
+  LOAD_REQUIRED_FIELDS,
+  TRUCK_REQUIRED_FIELDS
 }
