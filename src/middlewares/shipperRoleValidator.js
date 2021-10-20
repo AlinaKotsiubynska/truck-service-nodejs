@@ -1,10 +1,10 @@
 const CustomError = require('../helpers/classCustomError')
 const {USER_ROLE} = require('../helpers/constants')
 
-const driverRoleValidator = async (req, res, next) => {
+const shipperRoleValidator = async (req, res, next) => {
   try {
 
-    if (req.userRole !== USER_ROLE.DRIVER) {
+    if (req.userRole !== USER_ROLE.SHIPPER) {
       throw new CustomError(400, 'Not allowed for current user type')
     }
 
@@ -14,4 +14,4 @@ const driverRoleValidator = async (req, res, next) => {
   }
 }
 
-module.exports = driverRoleValidator
+module.exports = shipperRoleValidator

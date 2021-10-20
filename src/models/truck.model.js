@@ -8,7 +8,7 @@ const truck = new Schema(
     },
     assigned_to: {
       type: SchemaTypes.String,
-      default: null
+      default: ''
     },
     created_date:
     {
