@@ -1,6 +1,8 @@
 const User = require('../models/user.model')
 const { jwtGenerator } = require('../helpers/jwtGenerator')
-const { loginUserSchema, registerUserSchema, forgetPasswordSchema } = require('../helpers/validationSchemas/userSchemas')
+const { loginUserSchema,
+  registerUserSchema,
+  forgetPasswordSchema } = require('../helpers/validationSchemas/userSchemas')
 const CustomError = require('../helpers/classCustomError')
 const getCreatedDate = require('../helpers/getCreatedDate')
 const { validateHashedPassword, hashPassword } = require('../helpers/bcryptPasswordService')
@@ -84,7 +86,7 @@ const forgetUserPassword = async (req, res, next) => {
       text: `Your new email is ${newPass}. Please, change it after next login`
     };
     await mailServise.send(mailOptions)
-    
+
     res.status(200).json({ message: 'New password sent to your email address' })
   } catch (error) {
     if (!error.status) {
