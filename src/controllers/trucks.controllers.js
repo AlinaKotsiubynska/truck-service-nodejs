@@ -2,7 +2,7 @@ const Truck = require('../models/truck.model')
 const getCreatedDate = require('../helpers/getCreatedDate')
 const CustomError = require('../helpers/classCustomError')
 const { truckTypeSchema } = require('../helpers/validationSchemas/truckSchemas')
-const {TRUCK_REQUIRED_FIELDS} = require('../helpers/constants')
+const {TRUCK_REQUIRED_FIELDS, TRUCK_STATUS} = require('../helpers/constants')
 
 const getUserTrucks = async (req, res, next) => {
   try {
@@ -73,6 +73,7 @@ const updateUserTruck = async (req, res, next) => {
   try {
     const { id } = req.params
     const { type } = req.body
+    const { _id } = req.verifiedUser
     if (!type) {
       throw new CustomError(400, 'Please specify "type" parameter in request body')
     }
@@ -80,7 +81,10 @@ const updateUserTruck = async (req, res, next) => {
     if (error) {
       throw new CustomError(400, error.message)
     }
-    const truck = await Truck.findByIdAndUpdate(id, { type: type })
+    const truck = await Truck.findById(id)
+    if (truck.assigned_to === _id || truck.status === TRUCK_STATUS.OL) {
+      throw new CustomError(400, `Truck info can not be changed now`)
+    }
     if(!truck) {
       throw new CustomError(400, `Truck with id ${id} not found`)
     }
@@ -122,6 +126,9 @@ const deleteUserTruck = async (req, res, next) => {
     const truck = await Truck.findByIdAndRemove(id, {created_by: userId})
     if(!truck) {
       throw new CustomError(400, `Truck with id ${id} not found`)
+    }
+    if (truck.assigned_to === userId || truck.status === TRUCK_STATUS.OL) {
+      throw new CustomError(400, `Truck info can not be changed now`)
     }
     res.status(200).json({message: 'Truck deleted successfully'})
   } catch (error) {
