@@ -2,7 +2,7 @@ const { USER_ROLE, LOAD_STATUS } = require('./constants')
 const CustomError = require('./classCustomError')
 
 const driverAllowedStatus = [LOAD_STATUS.ASSIGNED, LOAD_STATUS.SHIPPED]
-const shipperAllowedStatus = [LOAD_STATUS.NEW, LOAD_STATUS.POSTED]
+const shipperAllowedStatus = [LOAD_STATUS.NEW, LOAD_STATUS.POSTED, LOAD_STATUS.ASSIGNED, LOAD_STATUS.SHIPPED]
 
 const defineAllowedStatus = (status, arr) => {
   if (!status) {

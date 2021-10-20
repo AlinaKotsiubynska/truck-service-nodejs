@@ -1,13 +1,18 @@
 const Load = require('../models/load.model')
 const Truck = require('../models/truck.model')
+const CustomError = require('../helpers/classCustomError')
 const getCreatedDate = require('../helpers/getCreatedDate')
 const { joiValidationService } = require('../helpers/joiValidationService')
 const {defineFilterByRole} = require('../helpers/defineFilterByRole')
 const {loadTruckMatcher} = require('../helpers/loadTruckMatcher')
 const { newLoadSchema, getLoadsSchema, updateLoadSchema } = require('../helpers/validationSchemas/loadSchemas')
-const CustomError = require('../helpers/classCustomError')
-const { LOADS_PAGINATION_OPTS: { LIMIT, OFFSET }, TRUCK_REQUIRED_FIELDS,
-  LOAD_STATUS, LOAD_STATE_TRANSITIONS, TRUCK_STATUS, LOAD_REQUIRED_FIELDS } = require('../helpers/constants')
+const {
+  LOADS_PAGINATION_OPTS: { LIMIT, OFFSET },
+  TRUCK_REQUIRED_FIELDS,
+  LOAD_STATUS,
+  LOAD_STATE_TRANSITIONS,
+  TRUCK_STATUS,
+  LOAD_REQUIRED_FIELDS } = require('../helpers/constants')
 
 
 
