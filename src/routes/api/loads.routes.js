@@ -14,7 +14,7 @@ const {driverRoleValidator, shipperRoleValidator} =require('../../middlewares')
 const router = Router()
 
 router.get('/', getUserLoads) //+
-router.get('/active', driverRoleValidator, getUserActiveLoads) //driver
+router.get('/active', driverRoleValidator, getUserActiveLoads) //driver +
 router.patch('/active/state', driverRoleValidator, triggerNextUserLoadState) //driver
 router.get('/:id', getUserLoad) //+
 router.put('/:id', shipperRoleValidator, updateUserLoad) //shipper +

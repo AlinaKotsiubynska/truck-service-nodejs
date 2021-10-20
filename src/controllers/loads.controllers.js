@@ -164,21 +164,37 @@ const deleteUserLoad = async (req, res, next) => {
   }
 }
 const triggerNextUserLoadState = async (req, res, next) => {
-  // try {
-  //   const { id: noteId } = req.params
-  //   const note = await Load.findByIdAndRemove(noteId)
-  //   if(!note) {
-  //     throw new CustomError(400, `Load with id ${noteId} not found`)
-  //   }
-  //   res.status(200).json({message: 'Success'})
-  // } catch (error) {
-  //       if(!error.status) {
-  //     res.status(500).json({message: error.message})
-  //   } else {
-  //   res.status(400).json({message: error.message})
-  //   }
+  try {
+    const { _id} = req.verifiedUser
+    const load = await Load.findOne({assigned_to: _id})
+    if(!load) {
+      throw new CustomError(400, `User has no active loads`)
+    }
+    if (load.status !== LOAD_STATUS.ASSIGNED) {
+      throw new CustomError(400, `Forbidden for current load status`)
+    }
+    const stateTransitionIndex = LOAD_STATE_TRANSITIONS.indexOf(load.state)
+    const newState = LOAD_STATE_TRANSITIONS[stateTransitionIndex + 1]
+    if (stateTransitionIndex === 2) {
+      const truck = await Truck.findOneAndUpdate({ assigned_to: _id }, { status: TRUCK_STATUS.IS })
+      load.status = LOAD_STATUS.SHIPPED
+    }
+    load.state = newState
+    load.logs.push({
+      message: newState,
+      time: getCreatedDate()
+    })
+    await load.save()
+  
+    res.status(200).json({message: `Load state changed to ${newState}`})
+  } catch (error) {
+        if(!error.status) {
+      res.status(500).json({message: error.message})
+    } else {
+    res.status(400).json({message: error.message})
+    }
 
-  // }
+  }
 }
 const postUserLoad = async (req, res, next) => {
   try {
