@@ -9,8 +9,6 @@ const defineAllowedStatus = (status, arr) => {
     return {$in: arr}
   }
 
-  console.log(status, arr.includes(status))
-
   if (!arr.includes(status)) {
     throw new CustomError(400, `Status ${status} is not allowed for current role`)
   }

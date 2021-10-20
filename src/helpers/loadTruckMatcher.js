@@ -11,7 +11,7 @@ const loadTruckMatcher = async (load) => {
   const condition = {
     type: { $in: truckTypes },
     status: TRUCK_STATUS.IS,
-    assigned_to: {$not: ''}
+    assigned_to: {$ne: ''}
   }
   return await Truck.findOne(condition)
 }

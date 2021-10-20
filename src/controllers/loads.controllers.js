@@ -2,9 +2,11 @@ const Load = require('../models/load.model')
 const getCreatedDate = require('../helpers/getCreatedDate')
 const { joiValidationService } = require('../helpers/joiValidationService')
 const {defineFilterByRole} = require('../helpers/defineFilterByRole')
+const {loadTruckMatcher} = require('../helpers/loadTruckMatcher')
 const { newLoadSchema, getLoadsSchema, updateLoadSchema } = require('../helpers/validationSchemas/loadSchemas')
 const CustomError = require('../helpers/classCustomError')
-const { LOADS_PAGINATION_OPTS: {LIMIT, OFFSET}, LOAD_STATUS } = require('../helpers/constants')
+const { LOADS_PAGINATION_OPTS: { LIMIT, OFFSET },
+  LOAD_STATUS, LOAD_STATE_TRANSITIONS, TRUCK_STATUS } = require('../helpers/constants')
 
 const LOAD_REQUIRED_FIELDS = ['_id', 'created_by', 'assigned_to', 'status', 'state', 'name',
   'payload', 'pickup_address', 'delivery_address', 'dimensions', 'logs', 'created_date']
@@ -180,25 +182,50 @@ const triggerNextUserLoadState = async (req, res, next) => {
   // }
 }
 const postUserLoad = async (req, res, next) => {
-  // try {
-  //   const { id: noteId } = req.params
-  //   const note = await Load.findByIdAndRemove(noteId)
-  //   if(!note) {
-  //     throw new CustomError(400, `Load with id ${noteId} not found`)
-  //   }
-  //   res.status(200).json({message: 'Success'})
-  // } catch (error) {
-  //       if(!error.status) {
-  //     res.status(500).json({message: 'Internal server error'})
-  //   } else {
-  //   res.status(400).json({message: error.message})
-  //   }
+  try {
+    const { id: loadId } = req.params
+    const load = await Load.findById(loadId)
+    if(!load) {
+      throw new CustomError(400, `Load with id ${loadId} not found`)
+    }
+    if (load.status !== LOAD_STATUS.NEW) {
+      throw new CustomError(400, `Posting is only allowed for status NEW, not for status ${load.status}`)
+    }
+    load.status = LOAD_STATUS.POSTED
+    await load.save()
 
-  // }
+
+    const truck = await loadTruckMatcher(load)
+    if (!truck) {
+      load.status = LOAD_STATUS.NEW
+      await load.save()
+      throw new CustomError(400, 'No truck for the current load is available now. Please, try later.')
+    }
+    load.assigned_to = truck.assigned_to
+    load.state = LOAD_STATE_TRANSITIONS[0]
+    load.status = LOAD_STATUS.ASSIGNED
+    load.logs.push({
+      message: `Load assigned to driver with id ${truck.assigned_to}`,
+      time: getCreatedDate()
+    })
+    await load.save()
+
+    truck.status = TRUCK_STATUS.OL
+    await truck.save()
+
+    res.status(200).json({message: 'Load posted successfully', driver_found: true})
+  } catch (error) {
+        if(!error.status) {
+      res.status(500).json({message: error.message})
+    } else {
+    res.status(400).json({message: error.message})
+    }
+
+  }
 }
 const getLoadShippingInfo = async (req, res, next) => {
   // try {
-  //   const { id: noteId } = req.params
+  //   const { id: loadId } = req.params
   //   const note = await Load.findByIdAndRemove(noteId)
   //   if(!note) {
   //     throw new CustomError(400, `Load with id ${noteId} not found`)
