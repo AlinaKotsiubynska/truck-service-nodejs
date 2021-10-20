@@ -125,7 +125,8 @@ const updateUserLoad = async (req, res, next) => {
 
 const getUserActiveLoads = async (req, res, next) => {
   try {
-    const {_id} = req.verifiedUser
+    const { _id } = req.verifiedUser
+    
     const load = await Load.findOne({ assigned_to: _id })
     if (!load) {
       throw new CustomError(400, `User has no active loads`)
@@ -228,7 +229,10 @@ const getLoadShippingInfo = async (req, res, next) => {
     if(!load) {
       throw new CustomError(400, `Load with id ${loadId} not found`)
     }
-    const truck = await Truck.findOne({assigned_to: load.assigned_to}, TRUCK_REQUIRED_FIELDS)
+    let truck = null
+    if (load.assigned_to) {
+      truck = await Truck.findOne({assigned_to: load.assigned_to}, TRUCK_REQUIRED_FIELDS)
+    }
     res.status(200).json({load: load, truck: truck})
   } catch (error) {
         if(!error.status) {
