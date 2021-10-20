@@ -1,4 +1,4 @@
-const { getRequiredTruckSize } = require('./getRequiredTruckSize')
+const { getRequiredTruckType } = require('./getRequiredTruckType')
 const {TRUCK_TYPE} = require('./constants')
 
 
@@ -13,7 +13,7 @@ describe('get truck size for the load', () => {
       }
     }
     const trucks = [TRUCK_TYPE.SPRINTER, TRUCK_TYPE.SMALL_STRAIGHT, TRUCK_TYPE.LARGE_STRAIGHT]
-    expect(getRequiredTruckSize(loadSize)).toEqual(trucks)
+    expect(getRequiredTruckType(loadSize)).toEqual(trucks)
   })
   test('medium size 1', () => {
     const loadSize = {
@@ -25,7 +25,7 @@ describe('get truck size for the load', () => {
       }
     }
     const trucks = [TRUCK_TYPE.SMALL_STRAIGHT, TRUCK_TYPE.LARGE_STRAIGHT]
-    expect(getRequiredTruckSize(loadSize)).toEqual(trucks)
+    expect(getRequiredTruckType(loadSize)).toEqual(trucks)
   })
   test('medium size 2', () => {
     const loadSize = {
@@ -37,7 +37,7 @@ describe('get truck size for the load', () => {
       }
     }
     const trucks = [TRUCK_TYPE.SMALL_STRAIGHT, TRUCK_TYPE.LARGE_STRAIGHT]
-    expect(getRequiredTruckSize(loadSize)).toEqual(trucks)
+    expect(getRequiredTruckType(loadSize)).toEqual(trucks)
   })
   test('large size 1', () => {
     const loadSize = {
@@ -49,7 +49,7 @@ describe('get truck size for the load', () => {
       }
     }
     const trucks = [TRUCK_TYPE.LARGE_STRAIGHT]
-    expect(getRequiredTruckSize(loadSize)).toEqual(trucks)
+    expect(getRequiredTruckType(loadSize)).toEqual(trucks)
   })
   test('large size 2', () => {
     const loadSize = {
@@ -61,7 +61,7 @@ describe('get truck size for the load', () => {
       }
     }
     const trucks = [TRUCK_TYPE.LARGE_STRAIGHT]
-    expect(getRequiredTruckSize(loadSize)).toEqual(trucks)
+    expect(getRequiredTruckType(loadSize)).toEqual(trucks)
   })
   test('over size 1', () => {
     const loadSize = {
@@ -73,7 +73,7 @@ describe('get truck size for the load', () => {
       }
     }
     const trucks = []
-    expect(getRequiredTruckSize(loadSize)).toEqual(trucks)
+    expect(getRequiredTruckType(loadSize)).toEqual(trucks)
   })
   test('over size 2', () => {
     const loadSize = {
@@ -85,6 +85,6 @@ describe('get truck size for the load', () => {
       }
     }
     const trucks = []
-    expect(getRequiredTruckSize(loadSize)).toEqual(trucks)
+    expect(getRequiredTruckType(loadSize)).toEqual(trucks)
   })
 })

@@ -1,6 +1,6 @@
 const {TRUCK_SIZES} = require('../../constants')
 
-const getRequiredTruckSize = (load) => {
+const getRequiredTruckType = (load) => {
   const sizes = []
 
   for (let key in TRUCK_SIZES) {
@@ -16,5 +16,5 @@ const getRequiredTruckSize = (load) => {
 }
 
 module.exports = {
-  getRequiredTruckSize
+  getRequiredTruckType
 }
