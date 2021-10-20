@@ -17,8 +17,13 @@ const changeUserPasswordSchema = Joi.object({
   newPassword: Joi.string().min(1).invalid(Joi.ref('oldPassword')).required()
 })
 
+const forgetPasswordSchema = Joi.object({
+  email: Joi.string().min(1).required()
+})
+
 module.exports = {
   registerUserSchema,
   loginUserSchema,
-  changeUserPasswordSchema
+  changeUserPasswordSchema,
+  forgetPasswordSchema
 }
