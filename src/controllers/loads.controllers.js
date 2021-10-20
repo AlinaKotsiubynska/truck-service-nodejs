@@ -1,13 +1,20 @@
-const Load = require('../models/load.model')
-const Truck = require('../models/truck.model')
-const getCreatedDate = require('../helpers/getCreatedDate')
-const { joiValidationService } = require('../helpers/joiValidationService')
-const {defineFilterByRole} = require('../helpers/defineFilterByRole')
-const {loadTruckMatcher} = require('../helpers/loadTruckMatcher')
-const { newLoadSchema, getLoadsSchema, updateLoadSchema } = require('../helpers/validationSchemas/loadSchemas')
-const CustomError = require('../helpers/classCustomError')
-const { LOADS_PAGINATION_OPTS: { LIMIT, OFFSET }, TRUCK_REQUIRED_FIELDS,
-  LOAD_STATUS, LOAD_STATE_TRANSITIONS, TRUCK_STATUS, LOAD_REQUIRED_FIELDS } = require('../helpers/constants')
+require('module-alias/register')
+const Load = require('models/load.model')
+const Truck = require('models/truck.model')
+const CustomError = require('helpers/classCustomError')
+const getCreatedDate = require('helpers/getCreatedDate')
+const { joiValidationService } = require('helpers/joiValidationService')
+const {defineFilterByRole} = require('helpers/defineFilterByRole')
+const { loadTruckMatcher } = require('helpers/loadTruckMatcher')
+const {createLog} = require('helpers/createLog')
+const { newLoadSchema, getLoadsSchema, updateLoadSchema } = require('helpers/validationSchemas/loadSchemas')
+const {
+  LOADS_PAGINATION_OPTS: { LIMIT, OFFSET },
+  TRUCK_REQUIRED_FIELDS,
+  LOAD_STATUS,
+  LOAD_STATE_TRANSITIONS,
+  TRUCK_STATUS,
+  LOAD_REQUIRED_FIELDS } = require('../helpers/constants')
 
 
 
@@ -127,9 +134,9 @@ const getUserActiveLoads = async (req, res, next) => {
   try {
     const { _id } = req.verifiedUser
     
-    const load = await Load.findOne({ assigned_to: _id })
+    const load = await Load.findOne({ assigned_to: _id }, LOAD_REQUIRED_FIELDS)
     if (!load) {
-      throw new CustomError(400, `User has no active loads`)
+      res.status(200).json({message: `User has no active loads`,load})
     }
     res.status(200).json({load})
   } catch (error) {
@@ -180,10 +187,7 @@ const triggerNextUserLoadState = async (req, res, next) => {
       load.status = LOAD_STATUS.SHIPPED
     }
     load.state = newState
-    load.logs.push({
-      message: newState,
-      time: getCreatedDate()
-    })
+    load.logs.push(createLog(newState))
     await load.save()
   
     res.status(200).json({message: `Load state changed to ${newState}`})
@@ -208,21 +212,19 @@ const postUserLoad = async (req, res, next) => {
     }
     load.status = LOAD_STATUS.POSTED
     await load.save()
-
+    load.logs.push(createLog(`Load status have been changed to POSTED`))
 
     const truck = await loadTruckMatcher(load)
     if (!truck) {
       load.status = LOAD_STATUS.NEW
       await load.save()
+      load.logs.push(createLog(`No truck found, Load status have been changed back to NEW`))
       throw new CustomError(400, 'No truck for the current load is available now. Please, try later.')
     }
     load.assigned_to = truck.assigned_to
     load.state = LOAD_STATE_TRANSITIONS[0]
     load.status = LOAD_STATUS.ASSIGNED
-    load.logs.push({
-      message: `Load assigned to driver with id ${truck.assigned_to}`,
-      time: getCreatedDate()
-    })
+    load.logs.push(createLog(`Load assigned to driver with id ${truck.assigned_to}`))
     await load.save()
 
     truck.status = TRUCK_STATUS.OL
@@ -265,11 +267,11 @@ const getLoadShippingInfo = async (req, res, next) => {
 module.exports = {
   getUserLoads,
   getUserLoad,
-  getUserActiveLoads, //driver
-  triggerNextUserLoadState, //driver
-  createUserLoad, //shipper +
-  updateUserLoad, //shipper
-  deleteUserLoad, //shipper
-  postUserLoad, //shipper
-  getLoadShippingInfo //shipper
+  getUserActiveLoads, 
+  triggerNextUserLoadState, 
+  createUserLoad,
+  updateUserLoad,
+  deleteUserLoad, 
+  postUserLoad,
+  getLoadShippingInfo 
 }

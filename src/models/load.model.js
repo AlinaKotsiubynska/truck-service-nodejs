@@ -1,5 +1,6 @@
+require('module-alias/register')
 const { Schema, model, SchemaTypes } = require('mongoose')
-const {LOAD_STATUS} = require('../helpers/constants')
+const {LOAD_STATUS} = require('helpers/constants')
 
 const load = new Schema(
   {

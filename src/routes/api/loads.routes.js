@@ -1,3 +1,4 @@
+require('module-alias/register')
 const { Router } = require('express')
 const {
   getUserLoads,
@@ -8,8 +9,8 @@ const {
   getUserActiveLoads,
   triggerNextUserLoadState,
   postUserLoad,
-  getLoadShippingInfo } = require('../../controllers/loads.controllers')
-const {driverRoleValidator, shipperRoleValidator} =require('../../middlewares')
+  getLoadShippingInfo } = require('controllers/loads.controllers')
+const {driverRoleValidator, shipperRoleValidator} =require('middlewares')
 
 const router = Router()
 

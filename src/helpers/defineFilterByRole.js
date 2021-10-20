@@ -1,8 +1,9 @@
-const { USER_ROLE, LOAD_STATUS } = require('./constants')
-const CustomError = require('./classCustomError')
+require('module-alias/register')
+const { USER_ROLE, LOAD_STATUS } = require('helpers/constants')
+const CustomError = require('helpers/classCustomError')
 
 const driverAllowedStatus = [LOAD_STATUS.ASSIGNED, LOAD_STATUS.SHIPPED]
-const shipperAllowedStatus = [LOAD_STATUS.NEW, LOAD_STATUS.POSTED]
+const shipperAllowedStatus = [LOAD_STATUS.NEW, LOAD_STATUS.POSTED, LOAD_STATUS.ASSIGNED, LOAD_STATUS.SHIPPED]
 
 const defineAllowedStatus = (status, arr) => {
   if (!status) {

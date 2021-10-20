@@ -1,5 +1,6 @@
-const CustomError = require('../helpers/classCustomError')
-const {USER_ROLE} = require('../helpers/constants')
+require('module-alias/register')
+const CustomError = require('helpers/classCustomError')
+const {USER_ROLE} = require('helpers/constants')
 
 const driverRoleValidator = async (req, res, next) => {
   try {

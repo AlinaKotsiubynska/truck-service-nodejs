@@ -1,5 +1,6 @@
+require('module-alias/register')
 const Joi = require('joi')
-const { LOAD_STATUS, LOADS_PAGINATION_OPTS } = require('../constants')
+const { LOAD_STATUS, LOADS_PAGINATION_OPTS } = require('helpers/constants')
 
 const newLoadSchema = Joi.object({
   name: Joi.string().min(1).required(),
