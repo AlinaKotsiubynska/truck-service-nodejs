@@ -5,7 +5,7 @@ const { loginUserSchema,
   registerUserSchema,
   forgetPasswordSchema } = require('helpers/validationSchemas/userSchemas')
 const { CustomError } = require('utils/CustomError')
-const getCreatedDate = require('utils/getCreatedDate')
+const { getCreatedDate } = require('utils/getCreatedDate')
 const { validateHashedPassword, hashPassword } = require('utils/bcryptPasswordService')
 const { mailServise } = require('utils/mailServise')
 const { getRandomPass } = require('utils/getRandomPass')

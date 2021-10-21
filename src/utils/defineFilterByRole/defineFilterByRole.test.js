@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 const { defineFilterByRole } = require('./defineFilterByRole')
-const { USER_ROLE, LOAD_STATUS, DRIVER_ALLOWED_LOAD_STATUS, SHIPPER_ALLOWED_LOAD_STATUS } = require('helpers/constants')
+const { USER_ROLE, LOAD_STATUS, DRIVER_ALLOWED_LOAD_STATUS } = require('helpers/constants')
 
 describe('Check is filter maked correctly', () => {
   test('should return filer obj for driver with status ptoperty as array', () => {
