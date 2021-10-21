@@ -1,6 +1,6 @@
-require('module-alias/register')
-const { createLog } = require('./createLog')
-const getCreatedDate =require('helpers/getCreatedDate')
+/* eslint-disable no-undef */
+// require('module-alias/register')
+const { createLog } = require('utils/createLog')
 
 describe('Create object with message and time fields', () => {
   test('should return object with message "Load posted"', () => {

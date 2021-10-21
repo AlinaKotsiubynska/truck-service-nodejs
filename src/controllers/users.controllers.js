@@ -1,9 +1,9 @@
 require('module-alias/register')
 const User = require('models/user.model')
 const Note = require('models/truck.model')
-const { validateHashedPassword, hashPassword } = require('helpers/bcryptPasswordService')
+const { validateHashedPassword, hashPassword } = require('utils/bcryptPasswordService')
 const {changeUserPasswordSchema} = require('helpers/validationSchemas/userSchemas')
-const CustomError = require('helpers/classCustomError')
+const { CustomError } = require('utils/CustomError')
 
 
 const USER_REQUIRED_FIELDS = ['_id', 'created_date', 'email', 'role']

@@ -1,5 +1,5 @@
 require('module-alias/register')
-const CustomError = require('helpers/classCustomError')
+const { CustomError } = require('utils/CustomError')
 const {USER_ROLE} = require('helpers/constants')
 
 const shipperRoleValidator = async (req, res, next) => {

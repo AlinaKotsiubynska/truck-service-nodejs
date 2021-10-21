@@ -2,9 +2,8 @@ require('module-alias/register')
 const jwt = require('jsonwebtoken')
 const User = require('models/user.model')
 const SECRET_KEY = require('configs/auth.config')
-const CustomError = require('helpers/classCustomError')
-
-const tokenRegex = /[\w\d\-_]+\.[\w\d\-_]+\.[\w\d\-_]+/m
+const { CustomError } = require('utils/CustomError')
+const { JWT_TOKEN_REGEX} = require('helpers/constants')
 
 const jwtValidator = async (req, res, next) => {
   try {
@@ -13,7 +12,7 @@ const jwtValidator = async (req, res, next) => {
       throw new CustomError(400, 'Jwt token is not provided')
     }
  
-    const token = auth.match(tokenRegex)[0]
+    const token = auth.match(JWT_TOKEN_REGEX)[0]
     const verified = jwt.verify(token, SECRET_KEY)
     const currentUser = await User.findById(verified['_id'])
 

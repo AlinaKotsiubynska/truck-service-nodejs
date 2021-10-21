@@ -1,6 +1,7 @@
-require('module-alias/register')
+/* eslint-disable no-undef */
+// require('module-alias/register')
 const { getRequiredTruckType } = require('./getRequiredTruckType')
-const {TRUCK_TYPE} = require('helpers/constants')
+const { TRUCK_TYPE } = require('helpers/constants')
 
 
 describe('get truck size for the load', () => {

@@ -1,5 +1,5 @@
 require('module-alias/register')
-const getCreatedDate =require('helpers/getCreatedDate')
+const { getCreatedDate } = require('utils/getCreatedDate')
 const createLog = (message) => {
   return {
     message,

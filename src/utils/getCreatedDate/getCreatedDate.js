@@ -3,4 +3,4 @@ const getCreatedDate = () => {
   return date.toISOString()
 }
 
-module.exports = getCreatedDate
+module.exports = { getCreatedDate }
