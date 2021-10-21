@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const { getCreatedDate } = require('./getCreatedDate')
 const { ISO_DATE_REGEX } = require('helpers/constants')
 
