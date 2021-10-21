@@ -10,7 +10,7 @@ const {
   triggerNextUserLoadState,
   postUserLoad,
   getLoadShippingInfo } = require('controllers/loads.controllers')
-const {driverRoleValidator, shipperRoleValidator} =require('middlewares')
+const {driverRoleValidator, shipperRoleValidator} = require('middlewares')
 
 const router = Router()
 

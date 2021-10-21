@@ -1,14 +1,14 @@
 require('module-alias/register')
 const User = require('models/user.model')
-const { jwtGenerator } = require('helpers/jwtGenerator')
+const { jwtGenerator } = require('utils/jwtGenerator')
 const { loginUserSchema,
   registerUserSchema,
   forgetPasswordSchema } = require('helpers/validationSchemas/userSchemas')
-const CustomError = require('helpers/classCustomError')
-const getCreatedDate = require('helpers/getCreatedDate')
-const { validateHashedPassword, hashPassword } = require('helpers/bcryptPasswordService')
-const { mailServise } = require('helpers/mailServise')
-const { getRandomPass } = require('helpers/getRandomPass')
+const { CustomError } = require('utils/CustomError')
+const getCreatedDate = require('utils/getCreatedDate')
+const { validateHashedPassword, hashPassword } = require('utils/bcryptPasswordService')
+const { mailServise } = require('utils/mailServise')
+const { getRandomPass } = require('utils/getRandomPass')
 
 
 const registerUser = async (req, res, next) => {

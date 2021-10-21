@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const CustomError = require('./classCustomError')
+const { CustomError } = require('./CustomError')
 const ROUNDS = 8;
 
 

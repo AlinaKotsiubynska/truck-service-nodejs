@@ -70,6 +70,12 @@ const LOAD_REQUIRED_FIELDS = ['_id', 'created_by', 'assigned_to', 'status', 'sta
 
 const TRUCK_REQUIRED_FIELDS = ['_id', 'created_by', 'assigned_to', 'type', 'status', 'created_date']
 
+const JWT_TOKEN_REGEX = /[\w\d\-_]+\.[\w\d\-_]+\.[\w\d\-_]+/m
+
+const DRIVER_ALLOWED_LOAD_STATUS = [LOAD_STATUS.ASSIGNED, LOAD_STATUS.SHIPPED]
+const SHIPPER_ALLOWED_LOAD_STATUS = [LOAD_STATUS.NEW, LOAD_STATUS.POSTED, LOAD_STATUS.ASSIGNED, LOAD_STATUS.SHIPPED]
+
+
 module.exports = {
   USER_ROLE,
   TRUCK_TYPE,
@@ -79,5 +85,8 @@ module.exports = {
   TRUCK_SIZES,
   LOAD_STATE_TRANSITIONS,
   LOAD_REQUIRED_FIELDS,
-  TRUCK_REQUIRED_FIELDS
+  TRUCK_REQUIRED_FIELDS,
+  JWT_TOKEN_REGEX,
+  DRIVER_ALLOWED_LOAD_STATUS,
+  SHIPPER_ALLOWED_LOAD_STATUS
 }

@@ -1,7 +1,7 @@
 require('module-alias/register')
 const Truck = require('models/truck.model')
-const getCreatedDate = require('helpers/getCreatedDate')
-const CustomError = require('helpers/classCustomError')
+const getCreatedDate = require('utils/getCreatedDate')
+const { CustomError } = require('utils/CustomError')
 const { truckTypeSchema } = require('helpers/validationSchemas/truckSchemas')
 const {TRUCK_REQUIRED_FIELDS, TRUCK_STATUS} = require('helpers/constants')
 
