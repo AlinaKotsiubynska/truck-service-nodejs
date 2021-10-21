@@ -5,8 +5,6 @@ const SECRET_KEY = require('configs/auth.config')
 const { CustomError } = require('utils/CustomError')
 const { JWT_TOKEN_REGEX} = require('helpers/constants')
 
-// const tokenRegex = /[\w\d\-_]+\.[\w\d\-_]+\.[\w\d\-_]+/m
-
 const jwtValidator = async (req, res, next) => {
   try {
     const auth = req.headers.authorization

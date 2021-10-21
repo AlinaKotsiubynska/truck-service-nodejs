@@ -40,7 +40,7 @@ const createUserTruck = async (req, res, next) => {
       created_date: getCreatedDate()
     }
     Truck.create(newTruck)
-    res.status(200).json({message: 'Success'})
+    res.status(200).json({message: 'Truck created successfully'})
     
   } catch (error) {
         if(!error.status) {
@@ -83,11 +83,11 @@ const updateUserTruck = async (req, res, next) => {
       throw new CustomError(400, error.message)
     }
     const truck = await Truck.findById(id)
-    if (truck.assigned_to === _id || truck.status === TRUCK_STATUS.OL) {
-      throw new CustomError(400, `Truck info can not be changed now`)
-    }
     if(!truck) {
       throw new CustomError(400, `Truck with id ${id} not found`)
+    }
+    if (truck.assigned_to === _id || truck.status === TRUCK_STATUS.OL) {
+      throw new CustomError(400, `Truck info can not be changed now`)
     }
     res.status(200).json({message: 'Truck details changed successfully'})
   } catch (error) {

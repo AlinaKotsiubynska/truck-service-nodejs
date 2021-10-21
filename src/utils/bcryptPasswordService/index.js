@@ -1,5 +1,6 @@
-const { bcryptPasswordService } = require('./bcryptPasswordService')
+const { hashPassword, validateHashedPassword } = require('./bcryptPasswordService')
 
 module.exports = {
-  bcryptPasswordService
+  hashPassword,
+  validateHashedPassword
 }

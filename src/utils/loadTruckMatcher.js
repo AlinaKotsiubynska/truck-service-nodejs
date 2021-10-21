@@ -2,7 +2,8 @@ require('module-alias/register')
 const Truck = require('models/truck.model')
 const { CustomError } = require('utils/CustomError')
 const { getRequiredTruckType } = require('utils/getRequiredTruckType')
-const {TRUCK_STATUS} = require('helpers/constants')
+const {createLog} = require('utils/createLog')
+const {TRUCK_STATUS, LOAD_STATUS} = require('helpers/constants')
 
 
 const loadTruckMatcher = async (load) => {
@@ -15,6 +16,9 @@ const loadTruckMatcher = async (load) => {
     }
 
   if (truckTypes.length === 0) {
+    load.status = LOAD_STATUS.NEW
+    load.logs.push(createLog(`No truck found, Load status have been changed back to NEW`))
+    await load.save()
     throw new CustomError(400, 'Load is too big for any of trucks')
   }
   

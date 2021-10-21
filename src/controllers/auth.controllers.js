@@ -10,7 +10,6 @@ const { validateHashedPassword, hashPassword } = require('utils/bcryptPasswordSe
 const { mailServise } = require('utils/mailServise')
 const { getRandomPass } = require('utils/getRandomPass')
 
-
 const registerUser = async (req, res, next) => {
   try {
     const { email, password, role } = req.body

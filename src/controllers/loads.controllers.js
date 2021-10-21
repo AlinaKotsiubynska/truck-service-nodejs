@@ -117,7 +117,7 @@ const updateUserLoad = async (req, res, next) => {
     for (let key in newLoadInfo) {
       load[key] = newLoadInfo[key]
     }
-
+    load.logs.push(createLog(`Load have been updated`))
     load.save()
     res.status(200).json({message: 'Load details changed successfully'})
   } catch (error) {
@@ -173,7 +173,8 @@ const deleteUserLoad = async (req, res, next) => {
 const triggerNextUserLoadState = async (req, res, next) => {
   try {
     const { _id} = req.verifiedUser
-    const load = await Load.findOne({assigned_to: _id})
+    const load = await Load.findOne({ assigned_to: _id })
+    console.log(load)
     if(!load) {
       throw new CustomError(400, `User has no active loads`)
     }
@@ -192,7 +193,7 @@ const triggerNextUserLoadState = async (req, res, next) => {
   
     res.status(200).json({message: `Load state changed to ${newState}`})
   } catch (error) {
-        if(!error.status) {
+    if(!error.status) {
       res.status(500).json({message: error.message})
     } else {
     res.status(400).json({message: error.message})
@@ -211,8 +212,8 @@ const postUserLoad = async (req, res, next) => {
       throw new CustomError(400, `Posting is only allowed for status NEW, not for status ${load.status}`)
     }
     load.status = LOAD_STATUS.POSTED
-    await load.save()
     load.logs.push(createLog(`Load status have been changed to POSTED`))
+    await load.save()
 
     const truck = await loadTruckMatcher(load)
     if (!truck) {

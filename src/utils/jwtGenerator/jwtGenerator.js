@@ -8,7 +8,7 @@ const jwtGenerator = ({email, _id}) => {
       email,
       _id
   }
-  if ( !_id || !_id.trim()) {
+  if ( !_id ) {
     throw new Error('_id is required')
   }
   return jwt.sign(payload, SECRET_KEY)
