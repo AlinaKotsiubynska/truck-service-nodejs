@@ -11,7 +11,7 @@
 
 # misc
 .DS_Store
-.env
+# .env
 
 
 npm-debug.log*
@@ -24,3 +24,4 @@ yarn-error.log*
 /mockups
 .eslintcache
 task.txt
+text.json

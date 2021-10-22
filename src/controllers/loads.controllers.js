@@ -136,7 +136,8 @@ const getUserActiveLoads = async (req, res, next) => {
     
     const load = await Load.findOne({ assigned_to: _id }, LOAD_REQUIRED_FIELDS)
     if (!load) {
-      res.status(200).json({message: `User has no active loads`,load})
+      res.status(200).json({ message: `User has no active loads`, load })
+      return
     }
     res.status(200).json({load})
   } catch (error) {
@@ -174,7 +175,7 @@ const triggerNextUserLoadState = async (req, res, next) => {
   try {
     const { _id} = req.verifiedUser
     const load = await Load.findOne({ assigned_to: _id })
-    console.log(load)
+
     if(!load) {
       throw new CustomError(400, `User has no active loads`)
     }

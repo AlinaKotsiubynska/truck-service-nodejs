@@ -1,9 +1,9 @@
 require('module-alias/register')
 const Joi = require('joi')
-const {USER_ROLE} = require('helpers/constants')
+const {USER_ROLE, EMAIL_REGEX} = require('helpers/constants')
 
 const registerUserSchema = Joi.object({
-  email: Joi.string().pattern(/^[a-zA-Z0-9.]{3,}@[a-zA-Z0-9]+[.]+[a-zA-Z0-9]+$/).required(),
+  email: Joi.string().pattern(EMAIL_REGEX).required(),
   password: Joi.string().min(1).required(),
   role: Joi.string().pattern(new RegExp(`${USER_ROLE.DRIVER}|${USER_ROLE.SHIPPER}`)).required()
 })

@@ -11,8 +11,8 @@ const jwtValidator = async (req, res, next) => {
     if (!auth) {
       throw new CustomError(400, 'Jwt token is not provided')
     }
- 
-    const token = auth.match(JWT_TOKEN_REGEX)[0]
+    const matchTokenRegex = auth.match(JWT_TOKEN_REGEX)
+    const token = matchTokenRegex ? matchTokenRegex[0] : ''
     const verified = jwt.verify(token, SECRET_KEY)
     const currentUser = await User.findById(verified['_id'])
 

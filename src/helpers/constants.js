@@ -77,6 +77,8 @@ const SHIPPER_ALLOWED_LOAD_STATUS = [LOAD_STATUS.NEW, LOAD_STATUS.POSTED, LOAD_S
 
 const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d*Z$/
 
+const EMAIL_REGEX = /^[\w\d!#$%&'*+-/=?^`{|.]{3,}@[\w\d!#$%&'*+-/=?^`{|.]+[.]+[\w\d!#$%&'*+-/=?^`{|.]+$/
+
 const BCRYPT_ROUNDS = 8;
 
 module.exports = {
@@ -93,5 +95,6 @@ module.exports = {
   DRIVER_ALLOWED_LOAD_STATUS,
   SHIPPER_ALLOWED_LOAD_STATUS,
   ISO_DATE_REGEX,
+  EMAIL_REGEX,
   BCRYPT_ROUNDS
 }
